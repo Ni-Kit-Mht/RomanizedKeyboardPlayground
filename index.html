@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Romanized Nepali Keyboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: #f0ece6;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            padding: 20px;
+            color: #1e1e2a;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+            padding: 24px 28px 36px;
+            transition: all 0.2s;
+        }
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 2px solid #e8e2da;
+        }
+        .header h1 {
+            font-size: 26px;
+            font-weight: 700;
+        }
+        .header h1 span {
+            color: #b84a3a;
+            font-weight: 400;
+        }
+        .header .sub {
+            font-size: 14px;
+            color: #6b6560;
+            background: #f0ece6;
+            padding: 5px 16px;
+            border-radius: 30px;
+            font-weight: 500;
+        }
+        /* Keyboard */
+        .keyboard-wrap {
+            background: #e8e2da;
+            border-radius: 16px;
+            padding: 16px 14px 12px;
+            margin-bottom: 24px;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.06);
+            overflow-x: auto;
+        }
+        .keyboard {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            min-width: 620px;
+        }
+        .row {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+        }
+        .key {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 0 #c0b8ae, 0 2px 6px rgba(0, 0, 0, 0.04);
+            padding: 4px 3px 3px;
+            min-width: 40px;
+            height: 52px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #2c2824;
+            cursor: default;
+            user-select: none;
+            flex: 0 0 auto;
+            line-height: 1.2;
+            transition: 0.05s ease;
+        }
+        .key .roman {
+            font-size: 12px;
+            font-weight: 700;
+            color: #3a3530;
+        }
+        .key .nepali {
+            font-family: 'Noto Sans Devanagari', 'Mangal', 'Nirmala UI', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e1e2a;
+            margin-top: 1px;
+            line-height: 1.1;
+        }
+        /* Key sizes */
+        .key.wide {
+            min-width: 56px;
+        }
+        .key.wider {
+            min-width: 72px;
+        }
+        .key.widest {
+            min-width: 88px;
+        }
+        .key.space {
+            min-width: 160px;
+        }
+        .key.small {
+            min-width: 32px;
+            font-size: 10px;
+        }
+        .key.special {
+            background: #f0ece6;
+            box-shadow: 0 2px 0 #c0b8ae;
+        }
+        .key.special .roman {
+            color: #6b625a;
+            font-size: 10px;
+        }
+        .key.special .nepali {
+            font-size: 14px;
+            color: #3d3530;
+        }
+        .key.double .roman {
+            font-size: 10px;
+        }
+        .key.double .nepali {
+            font-size: 14px;
+        }
+        .key.control {
+            background: #e8e2da;
+            color: #5a524a;
+            font-size: 11px;
+            font-weight: 600;
+            min-width: 48px;
+        }
+        .key.control .roman {
+            font-size: 11px;
+            color: #5a524a;
+        }
+        .key.control .nepali {
+            display: none;
+        }
+
+        /* Input */
+        .input-section {
+            margin-bottom: 28px;
+        }
+        .input-section label {
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+            color: #3a3530;
+            margin-bottom: 8px;
+        }
+        .input-section textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 16px 18px;
+            font-family: 'Noto Sans Devanagari', 'Mangal', 'Nirmala UI', 'Segoe UI', sans-serif;
+            font-size: 26px;
+            line-height: 1.7;
+            border: 2px solid #ddd6ce;
+            border-radius: 14px;
+            background: #fcfaf8;
+            color: #1e1e2a;
+            resize: vertical;
+            outline: none;
+            transition: border 0.2s;
+            letter-spacing: 0.5px;
+        }
+        .input-section textarea:focus {
+            border-color: #b84a3a;
+            background: #fffdfc;
+            box-shadow: 0 0 0 4px rgba(184, 74, 58, 0.08);
+        }
+        .input-section .hint-text {
+            margin-top: 8px;
+            font-size: 13px;
+            color: #7a726a;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .input-section .hint-text kbd {
+            background: #ece7e1;
+            padding: 2px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #3a3530;
+        }
+
+        /* Legend */
+        .legend-section {
+            margin-top: 24px;
+            border-top: 2px solid #ece7e1;
+            padding-top: 20px;
+        }
+        .legend-section h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1e1e2a;
+            margin-bottom: 14px;
+        }
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 6px 10px;
+            background: #f8f6f3;
+            padding: 14px 16px;
+            border-radius: 14px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            padding: 3px 0;
+        }
+        .legend-item .rom {
+            font-weight: 700;
+            color: #3a3530;
+            background: #e8e2da;
+            padding: 0 7px;
+            border-radius: 5px;
+            font-size: 13px;
+            min-width: 24px;
+            text-align: center;
+        }
+        .legend-item .dev {
+            font-family: 'Noto Sans Devanagari', 'Mangal', 'Nirmala UI', sans-serif;
+            font-size: 20px;
+            font-weight: 500;
+            color: #1e1e2a;
+            min-width: 26px;
+            text-align: center;
+        }
+        .legend-item .arrow {
+            color: #b0a79e;
+            font-weight: 300;
+            font-size: 13px;
+        }
+        .legend-item .note {
+            color: #8a827a;
+            font-size: 11px;
+            font-weight: 400;
+        }
+
+        /* Rules */
+        .rules-section {
+            margin-top: 24px;
+            border-top: 2px solid #ece7e1;
+            padding-top: 20px;
+        }
+        .rules-section h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1e1e2a;
+            margin-bottom: 12px;
+        }
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 14px;
+        }
+        .rule-card {
+            background: #f8f6f3;
+            border-radius: 12px;
+            padding: 14px 16px 16px;
+            border-left: 4px solid #b84a3a;
+        }
+        .rule-card h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #3a3530;
+            margin-bottom: 6px;
+        }
+        .rule-card .rule-example {
+            font-family: 'Noto Sans Devanagari', 'Mangal', 'Nirmala UI', sans-serif;
+            font-size: 20px;
+            font-weight: 500;
+            color: #1e1e2a;
+            background: #ffffff;
+            padding: 6px 12px;
+            border-radius: 8px;
+            display: inline-block;
+            margin: 3px 3px 3px 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+        .rule-card .rule-desc {
+            font-size: 13px;
+            color: #5a524a;
+            margin-top: 4px;
+        }
+        .rule-card .rule-desc kbd {
+            background: #e8e2da;
+            padding: 1px 7px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Joiners */
+        .joiner-section {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .joiner-card {
+            background: #f8f6f3;
+            border-radius: 12px;
+            padding: 14px 16px 16px;
+            border-left: 4px solid #2f6b8a;
+        }
+        .joiner-card h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #3a3530;
+            margin-bottom: 4px;
+        }
+        .joiner-card .ex {
+            font-family: 'Noto Sans Devanagari', 'Mangal', 'Nirmala UI', sans-serif;
+            font-size: 24px;
+            font-weight: 500;
+            color: #1e1e2a;
+            background: #ffffff;
+            padding: 3px 14px;
+            border-radius: 8px;
+            display: inline-block;
+            margin: 3px 0;
+        }
+        .joiner-card .ex small {
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 12px;
+            font-weight: 400;
+            color: #7a726a;
+            margin-left: 6px;
+        }
+        .joiner-card .seq {
+            font-size: 13px;
+            color: #5a524a;
+            margin-top: 3px;
+            word-break: break-all;
+        }
+        .joiner-card .seq kbd {
+            background: #e8e2da;
+            padding: 1px 7px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px 16px 24px;
+            }
+            .key {
+                min-width: 32px;
+                height: 44px;
+                padding: 3px 2px;
+                font-size: 10px;
+                border-radius: 6px;
+            }
+            .key .nepali {
+                font-size: 14px;
+            }
+            .key .roman {
+                font-size: 10px;
+            }
+            .key.wide {
+                min-width: 40px;
+            }
+            .key.wider {
+                min-width: 50px;
+            }
+            .key.widest {
+                min-width: 60px;
+            }
+            .key.space {
+                min-width: 100px;
+            }
+            .key.control {
+                min-width: 36px;
+                font-size: 9px;
+            }
+            .keyboard {
+                min-width: 480px;
+            }
+            .header h1 {
+                font-size: 20px;
+            }
+            .legend-grid {
+                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+                padding: 10px 12px;
+            }
+            .joiner-section {
+                grid-template-columns: 1fr;
+            }
+            .input-section textarea {
+                font-size: 20px;
+                min-height: 90px;
+                padding: 12px 14px;
+            }
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 12px 10px 20px;
+            }
+            .key {
+                min-width: 26px;
+                height: 36px;
+                padding: 2px 1px;
+                font-size: 8px;
+                border-radius: 4px;
+            }
+            .key .nepali {
+                font-size: 11px;
+            }
+            .key .roman {
+                font-size: 8px;
+            }
+            .key.wide {
+                min-width: 30px;
+            }
+            .key.wider {
+                min-width: 38px;
+            }
+            .key.widest {
+                min-width: 46px;
+            }
+            .key.space {
+                min-width: 60px;
+            }
+            .key.control {
+                min-width: 28px;
+                font-size: 8px;
+            }
+            .keyboard {
+                min-width: 380px;
+            }
+            .header h1 {
+                font-size: 16px;
+            }
+            .header .sub {
+                font-size: 11px;
+                padding: 4px 12px;
+            }
+            .legend-grid {
+                grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+                gap: 4px 6px;
+                padding: 8px 10px;
+            }
+            .legend-item {
+                font-size: 11px;
+            }
+            .legend-item .dev {
+                font-size: 16px;
+                min-width: 20px;
+            }
+            .legend-item .rom {
+                font-size: 11px;
+                min-width: 20px;
+                padding: 0 5px;
+            }
+            .input-section textarea {
+                font-size: 18px;
+                min-height: 70px;
+                padding: 10px 12px;
+            }
+            .rules-grid {
+                grid-template-columns: 1fr;
+            }
+            .joiner-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>⌨️ Romanized <span>Nepali</span></h1>
+            <div class="sub">QWERTY layout</div>
+        </div>
+
+        <!-- Keyboard -->
+        <div class="keyboard-wrap">
+            <div class="keyboard" id="keyboard"></div>
+        </div>
+
+        <!-- Input -->
+        <div class="input-section">
+            <label for="inputArea">✎ Type here (Nepali)</label>
+            <textarea id="inputArea" placeholder="Start typing…"></textarea>
+            <div class="hint-text">
+                <span>🔹 <kbd>Shift</kbd> for uppercase</span>
+                <span>🔹 <kbd>=</kbd> → ZWJ &nbsp;·&nbsp; <kbd>+</kbd> → ZWNJ</span>
+                <span>🔹 <kbd>Backspace</kbd> to delete</span>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend-section">
+            <h2>📋 Key Mapping</h2>
+            <div class="legend-grid" id="legendGrid"></div>
+        </div>
+
+        <!-- Conjunct Rules -->
+        <div class="rules-section">
+            <h2>🔗 Conjunct Characters</h2>
+            <div class="rules-grid">
+                <div class="rule-card">
+                    <h3>Set 1</h3>
+                    <div>
+                        <span class="rule-example">क्ष</span>
+                        <span class="rule-example">त्र</span>
+                        <span class="rule-example">ज्ञ</span>
+                    </div>
+                    <div class="rule-desc">
+                        <kbd>क</kbd> + <kbd>्</kbd> + <kbd>ष</kbd> &nbsp;→&nbsp; क्ष<br>
+                        <kbd>त</kbd> + <kbd>्</kbd> + <kbd>र</kbd> &nbsp;→&nbsp; त्र<br>
+                        <kbd>ज</kbd> + <kbd>्</kbd> + <kbd>ञ</kbd> &nbsp;→&nbsp; ज्ञ
+                    </div>
+                </div>
+                <div class="rule-card">
+                    <h3>Set 2</h3>
+                    <div>
+                        <span class="rule-example">त्त</span>
+                        <span class="rule-example">द्द</span>
+                        <span class="rule-example">द्व</span>
+                    </div>
+                    <div class="rule-desc">
+                        <kbd>त</kbd> + <kbd>्</kbd> + <kbd>त</kbd> &nbsp;→&nbsp; त्त<br>
+                        <kbd>द</kbd> + <kbd>्</kbd> + <kbd>द</kbd> &nbsp;→&nbsp; द्द<br>
+                        <kbd>द</kbd> + <kbd>्</kbd> + <kbd>व</kbd> &nbsp;→&nbsp; द्व
+                    </div>
+                </div>
+                <div class="rule-card">
+                    <h3>Set 3</h3>
+                    <div>
+                        <span class="rule-example">श्र</span>
+                        <span class="rule-example">द्य</span>
+                        <span class="rule-example">ट्ट</span>
+                    </div>
+                    <div class="rule-desc">
+                        <kbd>श</kbd> + <kbd>्</kbd> + <kbd>र</kbd> &nbsp;→&nbsp; श्र<br>
+                        <kbd>द</kbd> + <kbd>्</kbd> + <kbd>य</kbd> &nbsp;→&nbsp; द्य<br>
+                        <kbd>ट</kbd> + <kbd>्</kbd> + <kbd>ट</kbd> &nbsp;→&nbsp; ट्ट
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Joiners -->
+        <div class="joiner-section">
+            <div class="joiner-card">
+                <h4>🔹 ZWNJ (Zero Width Non-Joiner)</h4>
+                <div class="ex">ढुङ्‌गा <small>prevents blending</small></div>
+                <div class="seq">
+                    <kbd>ढ</kbd> + <kbd>ु</kbd> + <kbd>ङ</kbd> + <kbd>्</kbd> + <kbd>ZWNJ</kbd> + <kbd>ग</kbd> + <kbd>ा</kbd>
+                </div>
+                <div class="seq" style="margin-top:4px;">Type <kbd>+</kbd> for ZWNJ</div>
+            </div>
+            <div class="joiner-card">
+                <h4>🔹 ZWJ (Zero Width Joiner)</h4>
+                <div class="ex">मर्‍यो <small>creates half-र</small></div>
+                <div class="seq">
+                    <kbd>म</kbd> + <kbd>र</kbd> + <kbd>्</kbd> + <kbd>ZWJ</kbd> + <kbd>य</kbd> + <kbd>ो</kbd>
+                </div>
+                <div class="seq" style="margin-top:4px;">Type <kbd>=</kbd> for ZWJ</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ─── Key Map ────────────────────────────────────────────────
+        const keyMap = {
+            'a': 'ा', 'b': 'ब', 'c': 'च', 'd': 'द', 'e': 'े', 'f': 'उ',
+            'g': 'ग', 'h': 'ह', 'i': 'ि', 'j': 'ज', 'k': 'क', 'l': 'ल',
+            'm': 'म', 'n': 'न', 'o': 'ो', 'p': 'प', 'q': 'ट', 'r': 'र',
+            's': 'स', 't': 'त', 'u': 'ु', 'v': 'व', 'w': 'ौ', 'x': 'ड',
+            'y': 'य', 'z': 'ष',
+            'A': 'आ', 'B': 'भ', 'C': 'छ', 'D': 'ध', 'E': 'ै', 'F': 'ऊ',
+            'G': 'घ', 'H': 'अ', 'I': 'ी', 'J': 'झ', 'K': 'ख', 'L': 'ळ',
+            'M': 'ं', 'N': 'ण', 'O': 'ओ', 'P': 'फ', 'Q': 'ठ', 'R': 'ृ',
+            'S': 'श', 'T': 'थ', 'U': 'ू', 'V': 'ँ', 'W': 'औ', 'X': 'ढ',
+            'Y': 'ञ', 'Z': 'ऋ',
+            '1': '१', '2': '२', '3': '३', '4': '४', '5': '५',
+            '6': '६', '7': '७', '8': '८', '9': '९', '0': '०',
+            '-': '-', '_': '॒', '=': '\u200D', '+': '\u200C',
+            '[': 'इ', '{': 'ई', ']': 'ए', '}': 'ऐ', '\\': 'ॐ', '|': 'ः',
+            ';': ';', ':': ':', "'": "'", '"': '"', ',': ',', '<': 'ङ',
+            '.': '।', '>': '॥', '/': '्', '?': '?', '`': 'ऽ', '~': '़',
+            ' ': ' '
+        };
+
+        // ─── Legend Data ──────────────────────────────────────────
+        const legendEntries = [
+            ['a', 'आ'], ['A', 'ा'], ['b', 'ब'], ['B', 'भ'],
+            ['c', 'च'], ['C', 'छ'], ['d', 'द'], ['D', 'ध'],
+            ['e', 'ै'], ['E', 'ै'], ['f', 'उ'], ['F', 'ऊ'],
+            ['g', 'ग'], ['G', 'घ'], ['h', 'ह'], ['H', 'अ'],
+            ['i', 'ि'], ['I', 'ी'], ['j', 'ज'], ['J', 'झ'],
+            ['k', 'क'], ['K', 'ख'], ['l', 'ल'], ['L', 'ळ'],
+            ['m', 'म'], ['M', 'ं'], ['n', 'न'], ['N', 'ण'],
+            ['o', 'ो'], ['O', 'ओ'], ['p', 'प'], ['P', 'फ'],
+            ['q', 'ट'], ['Q', 'ठ'], ['r', 'र'], ['R', 'ृ'],
+            ['s', 'स'], ['S', 'श'], ['t', 'त'], ['T', 'थ'],
+            ['u', 'ु'], ['U', 'ू'], ['v', 'व'], ['V', 'ँ'],
+            ['w', 'ौ'], ['W', 'औ'], ['x', 'ड'], ['X', 'ढ'],
+            ['y', 'य'], ['Y', 'ञ'], ['z', 'ष'], ['Z', 'ऋ'],
+            ['1', '१'], ['2', '२'], ['3', '३'], ['4', '४'],
+            ['5', '५'], ['6', '६'], ['7', '७'], ['8', '८'],
+            ['9', '९'], ['0', '०'],
+            ['-', '-'], ['_', '॒'], ['=', 'ZWJ'], ['+', 'ZWNJ'],
+            ['[', 'इ'], ['{', 'ई'], [']', 'ए'], ['}', 'ऐ'],
+            ['\\', 'ॐ'], ['|', 'ः'], [';', ';'], [':', ':'],
+            ["'", "'"], ['"', '"'], [',', ','], ['<', 'ङ'],
+            ['.', '।'], ['>', '॥'], ['/', '्'], ['?', '?'],
+            ['`', 'ऽ'], ['~', '़']
+        ];
+
+        // ─── QWERTY Rows ──────────────────────────────────────────
+        const rows = [
+            // Row 1: numbers and symbols
+            ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '='],
+            // Row 2: qwerty
+            ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'],
+            // Row 3: asdfghjkl
+            ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'"],
+            // Row 4: zxcvbnm
+            ['z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/']
+        ];
+
+        // ─── Build Keyboard ──────────────────────────────────────
+        function buildKeyboard() {
+            const container = document.getElementById('keyboard');
+            container.innerHTML = '';
+
+            rows.forEach(rowKeys => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'row';
+
+                rowKeys.forEach(k => {
+                    const keyDiv = document.createElement('div');
+                    keyDiv.className = 'key';
+
+                    const lower = k.toLowerCase();
+                    const upper = k.toUpperCase();
+                    const hasLower = keyMap.hasOwnProperty(lower);
+                    const hasUpper = keyMap.hasOwnProperty(upper);
+
+                    let romanLabel = k;
+                    let nepaliLabel = '';
+
+                    if (hasLower && hasUpper && lower !== upper) {
+                        const nl = keyMap[lower];
+                        const nu = keyMap[upper];
+                        if (nl === nu) {
+                            romanLabel = k;
+                            nepaliLabel = nl;
+                        } else {
+                            romanLabel = lower + '/' + upper;
+                            nepaliLabel = nl + '/' + nu;
+                            keyDiv.classList.add('double');
+                        }
+                    } else if (hasLower) {
+                        romanLabel = lower;
+                        nepaliLabel = keyMap[lower];
+                    } else if (hasUpper) {
+                        romanLabel = upper;
+                        nepaliLabel = keyMap[upper];
+                    } else {
+                        romanLabel = k;
+                        nepaliLabel = k;
+                    }
+
+                    // Special overrides
+                    if (k === '=') { romanLabel = '='; nepaliLabel = 'ZWJ'; keyDiv.classList.add('special'); }
+                    if (k === '+') { romanLabel = '+'; nepaliLabel = 'ZWNJ'; keyDiv.classList.add('special'); }
+                    if (k === '\\') { romanLabel = '\\'; nepaliLabel = 'ॐ'; }
+                    if (k === '|') { romanLabel = '|'; nepaliLabel = 'ः'; }
+                    if (k === '`') { romanLabel = '`'; nepaliLabel = 'ऽ'; }
+                    if (k === '~') { romanLabel = '~'; nepaliLabel = '़'; }
+                    if (nepaliLabel === '\u200D') nepaliLabel = 'ZWJ';
+                    if (nepaliLabel === '\u200C') nepaliLabel = 'ZWNJ';
+
+                    const romanSpan = document.createElement('span');
+                    romanSpan.className = 'roman';
+                    romanSpan.textContent = romanLabel;
+
+                    const nepaliSpan = document.createElement('span');
+                    nepaliSpan.className = 'nepali';
+                    nepaliSpan.textContent = nepaliLabel;
+
+                    keyDiv.appendChild(romanSpan);
+                    keyDiv.appendChild(nepaliSpan);
+                    rowDiv.appendChild(keyDiv);
+                });
+
+                container.appendChild(rowDiv);
+            });
+        }
+
+        // ─── Build Legend ────────────────────────────────────────
+        const qwertyOrder = 'qwertyuiopasdfghjklzxcvbnm'.split('');
+
+        function sortLegendEntries(entries) {
+            const isLetter = ch => /^[a-zA-Z]$/.test(ch);
+            const isNumber = ch => /^[0-9]$/.test(ch);
+            const qwertyPos = ch => qwertyOrder.indexOf(ch.toLowerCase());
+
+            return entries.sort((a, b) => {
+                const aRom = a.rom,
+                    bRom = b.rom;
+                const aIsLetter = isLetter(aRom),
+                    bIsLetter = isLetter(bRom);
+                const aIsNumber = isNumber(aRom),
+                    bIsNumber = isNumber(bRom);
+
+                if (aIsLetter && bIsLetter) {
+                    const posDiff = qwertyPos(aRom) - qwertyPos(bRom);
+                    if (posDiff !== 0) return posDiff;
+                    return (aRom === aRom.toLowerCase() ? -1 : 1);
+                }
+                if (aIsLetter) return -1;
+                if (bIsLetter) return 1;
+                if (aIsNumber && bIsNumber) return parseInt(aRom) - parseInt(bRom);
+                if (aIsNumber) return -1;
+                if (bIsNumber) return 1;
+                return aRom.localeCompare(bRom);
+            });
+        }
+
+        function buildLegend() {
+            const grid = document.getElementById('legendGrid');
+            grid.innerHTML = '';
+            const seen = new Set();
+            const entries = [];
+
+            legendEntries.forEach(([rom, dev]) => {
+                const key = rom + '|' + dev;
+                if (seen.has(key)) return;
+                seen.add(key);
+                let note = '';
+                if (dev === 'ZWJ') note = '(ZWJ)';
+                else if (dev === 'ZWNJ') note = '(ZWNJ)';
+                entries.push({ rom, dev, note });
+            });
+
+            sortLegendEntries(entries);
+
+            entries.forEach(({ rom, dev, note }) => {
+                const item = document.createElement('div');
+                item.className = 'legend-item';
+
+                const romSpan = document.createElement('span');
+                romSpan.className = 'rom';
+                romSpan.textContent = rom;
+
+                const arrow = document.createElement('span');
+                arrow.className = 'arrow';
+                arrow.textContent = '→';
+
+                const devSpan = document.createElement('span');
+                devSpan.className = 'dev';
+                devSpan.textContent = dev;
+
+                item.appendChild(romSpan);
+                item.appendChild(arrow);
+                item.appendChild(devSpan);
+                if (note) {
+                    const noteSpan = document.createElement('span');
+                    noteSpan.className = 'note';
+                    noteSpan.textContent = note;
+                    item.appendChild(noteSpan);
+                }
+                grid.appendChild(item);
+            });
+        }
+// ─── Input Handler with Copy/Cut/Paste support ──────────────
+const input = document.getElementById('inputArea');
+
+input.addEventListener('keydown', function(e) {
+    const key = e.key;
+    
+    // ── Allow browser's native shortcuts for copy/cut/paste/select all ──
+    if ((e.ctrlKey || e.metaKey) && ['c', 'v', 'x', 'a'].includes(key.toLowerCase())) {
+        return; // Let browser handle these natively
+    }
+
+    // ── Allow navigation and editing keys ──
+    if (['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 
+         'Home', 'End', 'Tab', 'Enter'].includes(key)) {
+        return;
+    }
+
+    // ── Map roman characters to Nepali ──
+    if (key in keyMap) {
+        e.preventDefault();
+        const char = keyMap[key];
+        const start = this.selectionStart;
+        const end = this.selectionEnd;
+        const val = this.value;
+        this.value = val.substring(0, start) + char + val.substring(end);
+        const newPos = start + char.length;
+        this.selectionStart = this.selectionEnd = newPos;
+        this.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+});
+
+// ── Optional: prevent context menu ──
+input.addEventListener('contextmenu', e => e.preventDefault());
+
+// ── Optional: paste handler (currently does nothing special) ──
+input.addEventListener('paste', function(e) {
+    // Let browser handle paste normally
+    // Add custom paste logic here if needed
+});
+
+        // ─── Init ─────────────────────────────────────────────────
+        buildKeyboard();
+        buildLegend();
+        input.focus();
+
+        console.log('✅ Romanized Nepali Keyboard loaded (QWERTY layout)');
+        console.log('   • Type roman characters → Nepali output');
+        console.log('   • Shift for uppercase / alternate glyphs');
+        console.log('   • "=" → ZWJ   |   "+" → ZWNJ');
+    </script>
+</body>
+</html>
