@@ -30,7 +30,6 @@
             padding: 24px 28px 36px;
             transition: all 0.2s;
         }
-        /* Header */
         .header {
             display: flex;
             justify-content: space-between;
@@ -56,7 +55,6 @@
             border-radius: 30px;
             font-weight: 500;
         }
-        /* Keyboard */
         .keyboard-wrap {
             background: #e8e2da;
             border-radius: 16px;
@@ -117,7 +115,6 @@
             margin-top: 1px;
             line-height: 1.1;
         }
-        /* Key sizes */
         .key.wide {
             min-width: 56px;
         }
@@ -166,8 +163,6 @@
         .key.control .nepali {
             display: none;
         }
-
-        /* ─── POPUP MENU (floating) ─── */
         .popup-menu {
             position: fixed;
             background: #fffdfb;
@@ -216,8 +211,82 @@
             margin-top: 1px;
             opacity: 0.8;
         }
-
-        /* Input */
+        .font-controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            background: #f8f6f3;
+            border-radius: 12px;
+            flex-wrap: wrap;
+        }
+        .font-controls label {
+            font-weight: 600;
+            font-size: 14px;
+            color: #3a3530;
+        }
+        .font-controls select,
+        .font-controls input[type="number"] {
+            padding: 6px 10px;
+            border: 2px solid #ddd6ce;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            color: #1e1e2a;
+            outline: none;
+        }
+        .font-controls select:focus,
+        .font-controls input[type="number"]:focus {
+            border-color: #b84a3a;
+        }
+        .font-controls input[type="number"] {
+            width: 60px;
+        }
+        .font-controls .copy-btn {
+            background: #b84a3a;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+            margin-left: auto;
+        }
+        .font-controls .copy-btn:hover {
+            background: #9a3d30;
+        }
+        .font-controls .copy-btn:active {
+            transform: scale(0.96);
+        }
+        .preview-section {
+            margin-bottom: 20px;
+        }
+        .preview-section label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #3a3530;
+            margin-bottom: 6px;
+        }
+        .preview-box {
+            background: #fcfaf8;
+            border: 2px solid #ddd6ce;
+            border-radius: 12px;
+            padding: 14px 18px;
+            min-height: 60px;
+            font-size: 24px;
+            line-height: 1.7;
+            color: #1e1e2a;
+            transition: border 0.2s;
+            word-wrap: break-word;
+            font-family: 'Mangal', 'Noto Sans Devanagari', 'Nirmala UI', sans-serif;
+        }
+        .preview-box:focus-within {
+            border-color: #b84a3a;
+        }
         .input-section {
             margin-bottom: 28px;
         }
@@ -265,8 +334,6 @@
             font-weight: 600;
             color: #3a3530;
         }
-
-        /* Legend */
         .legend-section {
             margin-top: 24px;
             border-top: 2px solid #ece7e1;
@@ -321,8 +388,6 @@
             font-size: 11px;
             font-weight: 400;
         }
-
-        /* Rules */
         .rules-section {
             margin-top: 24px;
             border-top: 2px solid #ece7e1;
@@ -375,8 +440,6 @@
             font-size: 12px;
             font-weight: 600;
         }
-
-        /* Joiners */
         .joiner-section {
             margin-top: 20px;
             display: grid;
@@ -426,8 +489,6 @@
             font-size: 12px;
             font-weight: 600;
         }
-
-        /* Responsive */
         @media (max-width: 768px) {
             .container {
                 padding: 16px 16px 24px;
@@ -478,6 +539,13 @@
                 font-size: 20px;
                 min-height: 90px;
                 padding: 12px 14px;
+            }
+            .font-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .font-controls .copy-btn {
+                margin-left: 0;
             }
         }
         @media (max-width: 480px) {
@@ -551,23 +619,25 @@
             .joiner-section {
                 grid-template-columns: 1fr;
             }
+            .preview-box {
+                font-size: 18px;
+                min-height: 45px;
+                padding: 10px 14px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <h1>⌨️ Romanized <span>Nepali</span></h1>
             <div class="sub">QWERTY · click keys for popup</div>
         </div>
 
-        <!-- Keyboard -->
         <div class="keyboard-wrap">
             <div class="keyboard" id="keyboard"></div>
         </div>
 
-        <!-- Input -->
         <div class="input-section">
             <label for="inputArea">✎ Type here (Nepali)</label>
             <textarea id="inputArea" placeholder="Start typing…"></textarea>
@@ -579,13 +649,50 @@
             </div>
         </div>
 
-        <!-- Legend -->
+        <div class="font-controls">
+            <label for="fontSelect">Font:</label>
+            <select id="fontSelect">
+                <option value="Kalimati">Kalimati</option>
+                <option value="Mangal">Mangal</option>
+                <option value="Nirmala UI">Nirmala UI</option>
+                <option value="Kokila">Kokila</option>
+                <option value="Arial Unicode MS">Arial Unicode MS</option>
+                <option value="Noto Sans Devanagari">Noto Sans Devanagari</option>
+                <option value="Sanskrit 2003">Sanskrit 2003</option>
+                <option value="CDAC-GIST Surekh">CDAC-GIST Surekh</option>
+                <option value="Sarai">Sarai</option>
+                <option value="Baloo Bhai">Baloo Bhai</option>
+                <option value="Hind">Hind</option>
+                <option value="Kantipur">Kantipur</option>
+                <option value="Himalaya TT">Himalaya TT</option>
+                <option value="Himalaya">Himalaya</option>
+                <option value="Preeti">Preeti</option>
+                <option value="Arap 11">Arap 11</option>
+                <option value="Arap11">Arap11</option>
+                <option value="Shree Dev 071">Shree Dev 071</option>
+                <option value="Siddhanta">Siddhanta</option>
+                <option value="Karma">Karma</option>
+                <option value="Maitri">Maitri</option>
+                <option value="Gargi">Gargi</option>
+                <option value="Samyak">Samyak</option>
+            </select>
+
+            <label for="fontSize">Size:</label>
+            <input type="number" id="fontSize" value="24" min="12" max="72">
+
+            <button class="copy-btn" id="copyBtn">📋 Copy with Font</button>
+        </div>
+
+        <div class="preview-section">
+            <label>👁️ Live Preview</label>
+            <div class="preview-box" id="previewBox">Only preview here...</div>
+        </div>
+
         <div class="legend-section">
             <h2>📋 Key Mapping</h2>
             <div class="legend-grid" id="legendGrid"></div>
         </div>
 
-        <!-- Conjunct Rules -->
         <div class="rules-section">
             <h2>🔗 Conjunct Characters</h2>
             <div class="rules-grid">
@@ -631,7 +738,6 @@
             </div>
         </div>
 
-        <!-- Joiners -->
         <div class="joiner-section">
             <div class="joiner-card">
                 <h4>🔹 ZWNJ (Zero Width Non-Joiner)</h4>
@@ -652,12 +758,9 @@
         </div>
     </div>
 
-    <!-- Popup menu (floating) -->
     <div class="popup-menu" id="popupMenu"></div>
 
     <script>
-        // ─── ★ UPDATED Key Map ───────────────────────────────────
-        // Fixed: ` (backtick) → ऽ , ~ (tilde) → ़
         const keyMap = {
             'a': 'ा', 'b': 'ब', 'c': 'च', 'd': 'द', 'e': 'े', 'f': 'उ',
             'g': 'ग', 'h': 'ह', 'i': 'ि', 'j': 'ज', 'k': 'क', 'l': 'ल',
@@ -679,12 +782,10 @@
             ' ': ' '
         };
 
-        // ─── ★ UPDATED Legend Data ──────────────────────────────
-        // Updated to reflect ` → ऽ and ~ → ़
         const legendEntries = [
-            ['a', 'आ'], ['A', 'ा'], ['b', 'ब'], ['B', 'भ'],
+            ['a', 'ा'], ['A', 'आ'], ['b', 'ब'], ['B', 'भ'],
             ['c', 'च'], ['C', 'छ'], ['d', 'द'], ['D', 'ध'],
-            ['e', 'ै'], ['E', 'ै'], ['f', 'उ'], ['F', 'ऊ'],
+            ['e', 'े'], ['E', 'ै'], ['f', 'उ'], ['F', 'ऊ'],
             ['g', 'ग'], ['G', 'घ'], ['h', 'ह'], ['H', 'अ'],
             ['i', 'ि'], ['I', 'ी'], ['j', 'ज'], ['J', 'झ'],
             ['k', 'क'], ['K', 'ख'], ['l', 'ल'], ['L', 'ळ'],
@@ -703,39 +804,33 @@
             ['\\', 'ॐ'], ['|', 'ः'], [';', ';'], [':', ':'],
             ["'", "'"], ['"', '"'], [',', ','], ['<', 'ङ'],
             ['.', '।'], ['>', '॥'], ['/', '्'], ['?', '?'],
-            // ★ FIXED: ` → ऽ , ~ → ़
             ['`', 'ऽ'], ['~', '़']
         ];
 
-        // ─── QWERTY Rows ──────────────────────────────────────────
         const rows = [
-            ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '='],
-            ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'],
-            ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'"],
-            ['z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/']
-        ];
+    ['`/~', '1/!', '2/@', '3/#', '4/$', '5/%', '6/^', '7/&', '8/*', '9/(', '0/)', '-/_', '=/+'],
+    ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[/{', ']/}', '\\/|'],
+    ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';/:', "'/\""],
+    ['z', 'x', 'c', 'v', 'b', 'n', 'm', ',/<', './>', '//?']
+];
 
-        // ─── DOM refs ──────────────────────────────────────────────
         const input = document.getElementById('inputArea');
-        const keyboardEl = document.getElementById('keyboard');
         const popup = document.getElementById('popupMenu');
+        const previewBox = document.getElementById('previewBox');
+        const fontSelect = document.getElementById('fontSelect');
+        const fontSizeInput = document.getElementById('fontSize');
+        const copyBtn = document.getElementById('copyBtn');
 
-        // ─── Popup Logic ──────────────────────────────────────────
-function getAvailableCharsForKey(key) {
+        function getAvailableCharsForKey(key) {
     const raw = key;
     const variations = new Set();
-    
-    // Add the raw key
     variations.add(raw);
-    
-    // Add lower and upper case versions
+
     const lower = raw.toLowerCase();
     const upper = raw.toUpperCase();
     variations.add(lower);
     variations.add(upper);
-    
-    // For special characters, also try to get their shifted/unshifted versions
-    // Map of common key pairs
+
     const keyPairs = {
         '[': '{', '{': '[',
         ']': '}', '}': ']',
@@ -757,19 +852,21 @@ function getAvailableCharsForKey(key) {
         "'": '"', '"': "'",
         ',': '<', '<': ',',
         '.': '>', '>': '.',
-        '/': '?', '?': '/'
+        '/': '?', '?': '/'  // Added this line
     };
-    
-    // Add the paired key if it exists
+
     if (keyPairs[raw]) {
         variations.add(keyPairs[raw]);
     }
-    
-    // Also check if the raw key exists in keyMap
-    // If not, try to find it through the pairs
+
+    // Handle special case for = and + keys showing both ZWJ and ZWNJ
+    if (raw === '=' || raw === '+') {
+        variations.add('=');
+        variations.add('+');
+    }
+
     let rawExists = keyMap.hasOwnProperty(raw);
     if (!rawExists) {
-        // Try to find the key that maps to this character
         for (let [k, v] of Object.entries(keyMap)) {
             if (v === raw || k === raw) {
                 variations.add(k);
@@ -779,16 +876,27 @@ function getAvailableCharsForKey(key) {
     }
 
     const result = [];
+    // For ZWJ/ZWNJ special handling
+    if (raw === '=' || raw === '+') {
+        // Add both ZWJ and ZWNJ
+        const zwjExists = result.some(item => item.output === '\u200D');
+        const zwnjExists = result.some(item => item.output === '\u200C');
+        if (!zwjExists) {
+            result.push({ trigger: '=', output: '\u200D' });
+        }
+        if (!zwnjExists) {
+            result.push({ trigger: '+', output: '\u200C' });
+        }
+    }
+
     variations.forEach(v => {
         const mapped = keyMap[v];
         if (mapped !== undefined) {
-            // Check if this is a duplicate output
             const exists = result.some(item => item.output === mapped);
             if (!exists) {
                 result.push({ trigger: v, output: mapped });
             }
         } else {
-            // For characters not in keyMap, show them as-is
             const exists = result.some(item => item.output === v);
             if (!exists) {
                 result.push({ trigger: v, output: v });
@@ -806,31 +914,35 @@ function getAvailableCharsForKey(key) {
 
             popup.innerHTML = '';
             items.forEach(({ trigger, output }) => {
-                const div = document.createElement('div');
-                div.className = 'popup-item';
-                const main = document.createElement('span');
-                main.textContent = output;
-                div.appendChild(main);
-                const sub = document.createElement('span');
-                sub.className = 'sub';
-                sub.textContent = `‹${trigger}›`;
-                div.appendChild(sub);
+    const div = document.createElement('div');
+    div.className = 'popup-item';
+    const main = document.createElement('span');
+    // Display ZWJ/ZWNJ as text instead of invisible characters
+    let displayText = output;
+    if (output === '\u200D') displayText = 'ZWJ';
+    if (output === '\u200C') displayText = 'ZWNJ';
+    main.textContent = displayText;
+    div.appendChild(main);
+    const sub = document.createElement('span');
+    sub.className = 'sub';
+    sub.textContent = `‹${trigger}›`;
+    div.appendChild(sub);
 
-                div.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const char = output;
-                    const start = input.selectionStart;
-                    const end = input.selectionEnd;
-                    const val = input.value;
-                    input.value = val.substring(0, start) + char + val.substring(end);
-                    const newPos = start + char.length;
-                    input.selectionStart = input.selectionEnd = newPos;
-                    input.dispatchEvent(new Event('input', { bubbles: true }));
-                    closePopup();
-                    input.focus();
-                });
-                popup.appendChild(div);
-            });
+    div.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const char = output;
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        const val = input.value;
+        input.value = val.substring(0, start) + char + val.substring(end);
+        const newPos = start + char.length;
+        input.selectionStart = input.selectionEnd = newPos;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        closePopup();
+        input.focus();
+    });
+    popup.appendChild(div);
+});
 
             const rect = keyEl.getBoundingClientRect();
             let left = clientX || rect.left + rect.width / 2;
@@ -867,7 +979,6 @@ function getAvailableCharsForKey(key) {
             if (e.key === 'Escape') closePopup();
         });
 
-        // ─── Build Keyboard ──────────────────────────────────────
 function buildKeyboard() {
     const container = document.getElementById('keyboard');
     container.innerHTML = '';
@@ -879,73 +990,106 @@ function buildKeyboard() {
         rowKeys.forEach(k => {
             const keyDiv = document.createElement('div');
             keyDiv.className = 'key';
-            keyDiv.dataset.key = k;
+            
+            // Handle combined keys like '1/!' or '-/_'
+            let keys = k.split('/');
+            let mainKey = keys[0];
+            let shiftedKey = keys.length > 1 ? keys[1] : null;
+            
+            // Special case for '//?' - the first slash is the key, second slash is separator, ? is shifted
+            if (k === '//?') {
+                mainKey = '/';
+                shiftedKey = '?';
+                keyDiv.dataset.key = mainKey;
+                if (shiftedKey) {
+                    keyDiv.dataset.shifted = shiftedKey;
+                }
+            } else {
+                // Store both versions for the popup
+                keyDiv.dataset.key = mainKey;
+                if (shiftedKey) {
+                    keyDiv.dataset.shifted = shiftedKey;
+                }
+            }
 
-            const lower = k.toLowerCase();
-            const upper = k.toUpperCase();
-            const hasLower = keyMap.hasOwnProperty(lower);
-            const hasUpper = keyMap.hasOwnProperty(upper);
-
-            let romanLabel = k;
+            // ---- Build display labels ----
+            let romanLabel = mainKey;
             let nepaliLabel = '';
 
-            // First, get the default mapping from keyMap
-            if (hasLower && hasUpper && lower !== upper) {
-                const nl = keyMap[lower];
-                const nu = keyMap[upper];
-                if (nl === nu) {
-                    romanLabel = k;
-                    nepaliLabel = nl;
-                } else {
-                    romanLabel = lower + '/' + upper;
-                    nepaliLabel = nl + '/' + nu;
-                    keyDiv.classList.add('double');
-                }
-            } else if (hasLower) {
-                romanLabel = lower;
-                nepaliLabel = keyMap[lower];
-            } else if (hasUpper) {
-                romanLabel = upper;
-                nepaliLabel = keyMap[upper];
-            } else {
-                // For keys not in keyMap, use the key itself
-                romanLabel = k;
-                if (keyMap.hasOwnProperty(k)) {
-                    nepaliLabel = keyMap[k];
-                } else {
-                    nepaliLabel = k;
-                }
+            // Get mapping for the main key
+            let primary = keyMap[mainKey];
+            if (!primary) {
+                const lower = mainKey.toLowerCase();
+                const upper = mainKey.toUpperCase();
+                if (keyMap[lower]) primary = keyMap[lower];
+                else if (keyMap[upper]) primary = keyMap[upper];
             }
 
-            // OVERRIDE specific keys AFTER the default mapping
-            if (k === '=') { 
-                romanLabel = '='; 
-                nepaliLabel = 'ZWJ'; 
-                keyDiv.classList.add('special'); 
-            }
-            if (k === '+') { 
-                romanLabel = '+'; 
-                nepaliLabel = 'ZWNJ'; 
-                keyDiv.classList.add('special'); 
-            }
-            if (k === '\\') { 
-                romanLabel = '\\'; 
-                nepaliLabel = 'ॐ'; 
-            }
-            if (k === '|') { 
-                romanLabel = '|'; 
-                nepaliLabel = 'ः'; 
-            }
-            if (k === '`') { 
-                romanLabel = '`'; 
-                nepaliLabel = 'ऽ'; 
-            }
-            if (k === '~') { 
-                romanLabel = '~'; 
-                nepaliLabel = '़'; 
-            }
+            // Helper to clean joiner display
+            const clean = (v) => {
+                if (v === '\u200D') return 'ZWJ';
+                if (v === '\u200C') return 'ZWNJ';
+                return v;
+            };
+
+            // Check if this is a letter
+            const isLetter = /[a-zA-Z]/.test(mainKey);
             
-            // Clean up any Unicode joiner characters to readable labels
+            if (isLetter) {
+                // For letters, check if we have both lower and upper
+                const lower = mainKey.toLowerCase();
+                const upper = mainKey.toUpperCase();
+                const hasLower = keyMap[lower] !== undefined;
+                const hasUpper = keyMap[upper] !== undefined;
+                const lowerVal = keyMap[lower];
+                const upperVal = keyMap[upper];
+
+                if (hasLower && hasUpper && lowerVal !== upperVal) {
+                    romanLabel = lower + '/' + upper;
+                    let nl = clean(lowerVal);
+                    let nu = clean(upperVal);
+                    nepaliLabel = nl + '/' + nu;
+                    keyDiv.classList.add('double');
+                } else if (primary) {
+                    romanLabel = mainKey;
+                    nepaliLabel = clean(primary);
+                } else {
+                    romanLabel = mainKey;
+                    nepaliLabel = mainKey;
+                }
+            } else if (shiftedKey) {
+                // For symbols with shifted versions, show both
+                let mainMapping = keyMap[mainKey] || mainKey;
+                let shiftedMapping = keyMap[shiftedKey] || shiftedKey;
+                
+                romanLabel = mainKey + '/' + shiftedKey;
+                nepaliLabel = clean(mainMapping) + '/' + clean(shiftedMapping);
+                keyDiv.classList.add('double');
+            } else if (primary) {
+                // Single mapping
+                romanLabel = mainKey;
+                nepaliLabel = clean(primary);
+            } else {
+                // No mapping
+                romanLabel = mainKey;
+                nepaliLabel = mainKey;
+            }
+
+            // ---- Special handling for joiner characters ----
+            if (mainKey === '=') { 
+                romanLabel = '=/+'; 
+                nepaliLabel = 'ZWJ/ZWNJ'; 
+                keyDiv.classList.add('special');
+                keyDiv.dataset.key = '=';
+            }
+            if (mainKey === '+') { 
+                romanLabel = '=/+'; 
+                nepaliLabel = 'ZWJ/ZWNJ'; 
+                keyDiv.classList.add('special');
+                keyDiv.dataset.key = '+';
+            }
+
+            // Final cleanup for display
             if (nepaliLabel === '\u200D') nepaliLabel = 'ZWJ';
             if (nepaliLabel === '\u200C') nepaliLabel = 'ZWNJ';
 
@@ -967,11 +1111,10 @@ function buildKeyboard() {
 
             rowDiv.appendChild(keyDiv);
         });
-
         container.appendChild(rowDiv);
     });
 }
-        // ─── Build Legend ────────────────────────────────────────
+
         const qwertyOrder = 'qwertyuiopasdfghjklzxcvbnm'.split('');
 
         function sortLegendEntries(entries) {
@@ -1048,14 +1191,71 @@ function buildKeyboard() {
             });
         }
 
-        // ─── Input Handler ──────────────────────────────────────
+        function convertToDevanagari(text) {
+            let result = '';
+            for (let char of text) {
+                result += keyMap[char] || char;
+            }
+            return result;
+        }
+
+        function updatePreview() {
+            const raw = input.value;
+            const converted = convertToDevanagari(raw);
+            const font = fontSelect.value;
+            const size = fontSizeInput.value;
+
+            previewBox.style.fontFamily = font;
+            previewBox.style.fontSize = size + 'px';
+            previewBox.textContent = converted || 'Only preview here...';
+        }
+
+        function copyWithFont() {
+            const raw = input.value;
+            const converted = convertToDevanagari(raw);
+
+            if (!converted || converted.trim() === '') {
+                alert('Please type some text first!');
+                return;
+            }
+
+            const font = fontSelect.value;
+            const size = fontSizeInput.value;
+
+            const tempSpan = document.createElement('span');
+            tempSpan.style.fontFamily = font;
+            tempSpan.style.fontSize = size + 'px';
+            tempSpan.textContent = converted;
+
+            navigator.clipboard.write([
+                new ClipboardItem({
+                    'text/html': new Blob([tempSpan.outerHTML], { type: 'text/html' }),
+                    'text/plain': new Blob([converted], { type: 'text/plain' })
+                })
+            ]).then(() => {
+                copyBtn.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    copyBtn.textContent = '📋 Copy with Font';
+                }, 2000);
+            }).catch(err => {
+                navigator.clipboard.writeText(converted).then(() => {
+                    copyBtn.textContent = '✅ Copied (plain text)';
+                    setTimeout(() => {
+                        copyBtn.textContent = '📋 Copy with Font';
+                    }, 2000);
+                });
+                console.error('Copy failed:', err);
+            });
+        }
+
         input.addEventListener('keydown', function(e) {
             const key = e.key;
             if ((e.ctrlKey || e.metaKey) && ['c', 'v', 'x', 'a'].includes(key.toLowerCase())) {
                 return;
             }
-            if (['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 
-                 'Home', 'End', 'Tab', 'Enter'].includes(key)) {
+            if (['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
+                    'Home', 'End', 'Tab', 'Enter'
+                ].includes(key)) {
                 return;
             }
             if (key in keyMap) {
@@ -1073,12 +1273,16 @@ function buildKeyboard() {
 
         input.addEventListener('contextmenu', e => e.preventDefault());
 
-        // ─── Init ─────────────────────────────────────────────────
+        input.addEventListener('input', updatePreview);
+        fontSelect.addEventListener('change', updatePreview);
+        fontSizeInput.addEventListener('input', updatePreview);
+        fontSizeInput.addEventListener('change', updatePreview);
+        copyBtn.addEventListener('click', copyWithFont);
+
         buildKeyboard();
         buildLegend();
+        updatePreview();
         input.focus();
-
-        // console.log('   • Click any key → popup with available characters');
     </script>
 </body>
 </html>
